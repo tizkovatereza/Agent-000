@@ -1,4 +1,4 @@
-// pages/api/openai.ts
+// pages/api/anthropic.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
  if (req.method === 'POST') {
     try {
       const { input } = req.body;
-      const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
+      const response = await axios.post('https://api.anthropic.com/v1/engines/claude/completions', {
         prompt: input,
         max_tokens: 60,
         n: 1,
@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         temperature: 0.5,
       }, {
         headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
           'Content-Type': 'application/json',
         },
       });
