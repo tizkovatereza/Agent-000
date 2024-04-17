@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-       const res = await axios.post('/api/anthropic', { input }); // Updated to use the Anthropic API endpoint
+       const res = await axios.post('/api/submit', { input }); // Updated to use the Anthropic API endpoint
        setResponse(res.data.message);
     } catch (error) {
        console.error(error);
