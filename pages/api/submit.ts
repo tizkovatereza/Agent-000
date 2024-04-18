@@ -9,8 +9,7 @@ type ApiResponse = {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
-  const sandbox = await Sandbox.create({ apiKey: 'E2B_API_KEY' });
-
+  const sandbox = await Sandbox.create();
   if (req.method === 'POST') {
     try {
       const anthropic = new Anthropic({
