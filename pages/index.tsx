@@ -19,7 +19,7 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <h1>Terka's AI Friend ⭐️</h1>
+      <h1>🦄 Terka's AI Friend ⭐️</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="input">Enter some text:</label>
         <input
