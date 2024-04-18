@@ -19,7 +19,7 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <h1>My Interactive App ⭐️</h1>
+      <h1>Terka's AI Friend ⭐️</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="input">Enter some text:</label>
         <input
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
         />
         <button type="submit">Submit</button>
       </form>
-      {response && <p>Server response: {response}</p>}
+      {response && <p>AI friend: {response}</p>}
     </div>
   );
 };
