@@ -2,12 +2,15 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import Anthropic from '@anthropic-ai/sdk';
 import { Sandbox } from 'e2b' // E2B 
 
+
 type ApiResponse = {
   message?: string;
   error?: string;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+  const sandbox = await Sandbox.create({ apiKey: 'E2B_API_KEY' });
+
   if (req.method === 'POST') {
     try {
       const anthropic = new Anthropic({
@@ -31,4 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.setHeader('Allow', ['POST']);
     res.status(405).end('Method Not Allowed');
   }
+
+  await sandbox.close()
 }
+
