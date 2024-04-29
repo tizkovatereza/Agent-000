@@ -1,13 +1,19 @@
-// pages/app.tsx
-import { useState } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const AppPage = () => {
  const [input, setInput] = useState('');
  const [response, setResponse] = useState('');
 
- const handleSubmit = (event: React.FormEvent) => {
+ const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setResponse('Hello friend');
+    try {
+      const res = await axios.post('/api/submit', { input });  // Use the same endpoint as in index.tsx
+      setResponse(res.data.message);
+    } catch (error) {
+      console.error(error);
+      setResponse('An error occurred. Please try again later.');
+    }
  };
 
  return (

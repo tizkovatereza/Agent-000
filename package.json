@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.20.5",
+    "@anthropic-ai/sdk": "^0.20.7",
     "@e2b/code-interpreter": "^0.0.2",
     "axios": "^1.6.8",
     "e2b": "^0.13.1",
