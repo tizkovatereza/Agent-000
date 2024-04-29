@@ -22,8 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         model: 'claude-3-opus-20240229',
       });
 
-      if (response.requiresCodeExecution) { // Pseudocode: Adjust based on actual API response
-        const codeToExecute = extractCode(response); // Implement this function to parse the response
+      if (response.requiresCodeExecution) { // THD - I need to adjust this based on API response
+        const codeToExecute = extractCode(response); // I need to implement function to parse a response
         const executionResults = await sandbox.runCode(codeToExecute);
         response.message += ` Execution Results: ${executionResults}`;
       }
