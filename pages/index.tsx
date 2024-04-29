@@ -1,9 +1,4 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Sandbox } from 'e2b';
-import { CodeInterpreter } from '@e2b/code-interpreter'
-
-
+// Same imports and setup
 const Home: React.FC = () => {
   const [input, setInput] = useState('');
   const [response, setResponse] = useState('');
@@ -11,14 +6,13 @@ const Home: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-       const res = await axios.post('/api/submit', { input }); // Updated to use the Anthropic API endpoint
+       const res = await axios.post('/api/submit', { input });
        setResponse(res.data.message);
     } catch (error) {
        console.error(error);
        setResponse('An error occurred. Please try again later.');
     }
    };
-   
 
   return (
     <div>
