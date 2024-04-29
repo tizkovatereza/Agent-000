@@ -1,4 +1,4 @@
-// Same imports and setup
+import React, { useState } from 'react';
 const Home: React.FC = () => {
   const [input, setInput] = useState('');
   const [response, setResponse] = useState('');
