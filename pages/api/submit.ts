@@ -3,13 +3,13 @@ import Anthropic from '@anthropic-ai/sdk';
 import { Sandbox } from 'e2b'; // E2B
 import { CodeInterpreter, Execution } from '@e2b/code-interpreter'
 
-// Import things for Anthropic and E2B code interpreting
+// Import Anthropic and E2B tools
 import {
   MODEL_NAME,
   SYSTEM_PROMPT,
   tools,
-} from './model' // Importing constants and tools from model.ts
-import { codeInterpret } from './codeInterpreter' // Importing code interpretation functions
+} from './model'
+import { codeInterpret } from './codeInterpreter'
 
 // Initialize Anthropic client
 const anthropic = new Anthropic();
@@ -36,18 +36,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         max_tokens: 1024,
         messages: [{ role: 'user', content: input }],
         model: 'claude-3-opus-20240229',
+        tools: tools, // Include E2B code interpreter tool
       });
 
-      // Check if the response requires code execution (Incomplete condition)
-      if (response.content.) {
-        // Extract code to execute from the response (Not implemented yet)
-        const codeToExecute = extractCode(response); // You'll need to implement this function
-        
-        // Execute the extracted code in the sandbox environment
-        const executionResults = await sandbox.runCode(codeToExecute);
-        
-        // Append execution results to the response message
-        response.message += ` Execution Results: ${executionResults}`;
+      // Check if the response requires code execution
+      if (response.stop_reason === 'tool_use') {
+        const toolBlock = response.content.find((block) => block.type === 'tool_use');
+        const toolName = toolBlock.name;
+        const toolInput = toolBlock.input;
+
+        if (toolName === 'execute_python') {
+          const code = toolInput.code;
+          const codeInterpreter = await CodeInterpreter.create(); // Initialize E2B code interpreter
+          const codeOutput = await codeInterpret(codeInterpreter, code); // Interpret the code using E2B code interpreter
+          await codeInterpreter.close(); // Close the code interpreter after execution
+          
+          // Append execution results to the response message
+          response.message += ` Execution Results: ${codeOutput.results}`;
+        }
       }
 
       // Extract message from the response
