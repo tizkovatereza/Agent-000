@@ -3,7 +3,6 @@ import Anthropic from '@anthropic-ai/sdk';
 import { Sandbox } from 'e2b'; // E2B
 import { CodeInterpreter, Execution } from '@e2b/code-interpreter'
 
-
 // Import things for Anthropic and E2B code interpreting
 import {
   MODEL_NAME,
@@ -12,8 +11,7 @@ import {
 } from './model'
 import { codeInterpret } from './codeInterpreter'
 
-
-const anthropic = new Anthropic()
+const anthropic = new Anthropic();
 
 type ApiResponse = {
   message?: string;
@@ -24,10 +22,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const sandbox = await Sandbox.create();
   if (req.method === 'POST') {
     try {
-      const anthropic = new Anthropic({
-        apiKey: process.env.ANTHROPIC_API_KEY
-      });
-
       const { input } = req.body;
       const response = await anthropic.messages.create({
         max_tokens: 1024,
@@ -35,8 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         model: 'claude-3-opus-20240229',
       });
 
-      if (response.requiresCodeExecution) { // THD - I need to adjust this based on API response
-        const codeToExecute = extractCode(response); // I need to implement function to parse a response        
+      if (response.requiresCodeExecution) {
+        const codeToExecute = extractCode(response); // You'll need to implement this function
         const executionResults = await sandbox.runCode(codeToExecute);
         response.message += ` Execution Results: ${executionResults}`;
       }
