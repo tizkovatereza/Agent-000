@@ -1,6 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Anthropic from '@anthropic-ai/sdk';
 import { Sandbox } from 'e2b'; // E2B
+import { CodeInterpreter, Execution } from '@e2b/code-interpreter'
+
+
+// Import things for Anthropic and E2B code interpreting
+import {
+  MODEL_NAME,
+  SYSTEM_PROMPT,
+  tools,
+} from './model'
+import { codeInterpret } from './codeInterpreter'
+
+
+const anthropic = new Anthropic()
 
 type ApiResponse = {
   message?: string;
@@ -23,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       });
 
       if (response.requiresCodeExecution) { // THD - I need to adjust this based on API response
-        const codeToExecute = extractCode(response); // I need to implement function to parse a response
+        const codeToExecute = extractCode(response); // I need to implement function to parse a response        
         const executionResults = await sandbox.runCode(codeToExecute);
         response.message += ` Execution Results: ${executionResults}`;
       }
