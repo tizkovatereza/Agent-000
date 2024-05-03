@@ -35,25 +35,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       const response = await anthropic.messages.create({
         max_tokens: 1024,
         messages: [{ role: 'user', content: input }],
-        model: 'claude-3-opus-20240229',
+        model: 'claude-3-opus-20240229', // Replace with your actual model name
         tools: tools, // Include E2B code interpreter tool
       });
 
       // Check if the response requires code execution
       if (response.stop_reason === 'tool_use') {
-        const toolBlock = response.content.find((block) => block.type === 'tool_use');
-        const toolName = toolBlock.name;
-        const toolInput = toolBlock.input;
+        // Inspect the structure of the response content to understand the properties available in tool blocks
+        console.log(response.content);
 
-        if (toolName === 'execute_python') {
-          const code = toolInput.code;
-          const codeInterpreter = await CodeInterpreter.create(); // Initialize E2B code interpreter
-          const codeOutput = await codeInterpret(codeInterpreter, code); // Interpret the code using E2B code interpreter
-          await codeInterpreter.close(); // Close the code interpreter after execution
-          
-          // Append execution results to the response message
-          response.message += ` Execution Results: ${codeOutput.results}`;
-        }
+        // Handle different types of blocks in the response content
+        // Adjust the code to access the correct properties based on the actual structure
       }
 
       // Extract message from the response
