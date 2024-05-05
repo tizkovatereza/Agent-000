@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Anthropic from '@anthropic-ai/sdk';
+import { tools } from './model';
 
 // Initialize Anthropic client
 const anthropic = new Anthropic();
