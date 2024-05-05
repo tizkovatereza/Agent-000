@@ -6,24 +6,23 @@ const AppPage = () => {
  const [response, setResponse] = useState('');
 
  const handleSubmit = async (event: React.FormEvent) => {
-  event.preventDefault();
-  try {
-    const res = await axios.post(
-      '/api/submit',
-      { input },
-      {
-        headers: {
-          'anthropic-beta': 'tools-2024-04-04' // Add the required header
+    event.preventDefault();
+    try {
+      const res = await axios.post(
+        '/api/submit',
+        { input },
+        {
+          headers: {
+            'anthropic-beta': 'tools-2024-04-04' // Add the required header
+          }
         }
-      }
-    );
-    setResponse(res.data.message);
-  } catch (error) {
-    console.error(error);
-    setResponse('An error occurred. Please try again later.');
-  }
-};
-
+      );
+      setResponse(res.data.message);
+    } catch (error) {
+      console.error(error);
+      setResponse('An error occurred. Please try again later.');
+    }
+ };
 
  return (
     <div>
