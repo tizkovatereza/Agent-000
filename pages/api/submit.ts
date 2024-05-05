@@ -1,15 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Anthropic from '@anthropic-ai/sdk';
-import { Sandbox } from 'e2b'; // E2B
-import { CodeInterpreter, Execution } from '@e2b/code-interpreter'
-
-// Import Anthropic and E2B tools
-import {
-  MODEL_NAME,
-  SYSTEM_PROMPT,
-  tools,
-} from './model'
-import { codeInterpret } from './codeInterpreter'
 
 // Initialize Anthropic client
 const anthropic = new Anthropic();
@@ -22,14 +12,17 @@ type ApiResponse = {
 
 // Define API endpoint handler function
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
-  // Create sandbox environment for code execution
-  const sandbox = await Sandbox.create();
-  
   // Check if the incoming request method is POST
   if (req.method === 'POST') {
     try {
       // Extract input text from the request body
       const { input } = req.body;
+      
+      // Check for the presence of the 'anthropic-beta' header and validate its value
+      const anthropicBetaHeader = req.headers['anthropic-beta'];
+      if (anthropicBetaHeader !== 'tools-2024-04-04') {
+        throw new Error('Invalid or missing header: anthropic-beta');
+      }
       
       // Send input text to Anthropic model for processing
       const response = await anthropic.messages.create({
@@ -38,15 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         model: 'claude-3-opus-20240229', // Replace with your actual model name
         tools: tools, // Include E2B code interpreter tool
       });
-
-      // Check if the response requires code execution
-      if (response.stop_reason === 'tool_use') {
-        // Inspect the structure of the response content to understand the properties available in tool blocks
-        console.log(response.content);
-
-        // Handle different types of blocks in the response content
-        // Adjust the code to access the correct properties based on the actual structure
-      }
 
       // Extract message from the response
       const message = response.message;
@@ -57,9 +41,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       // Handle errors during request processing
       console.error('Error processing request:', error);
       res.status(500).json({ error: 'Internal Server Error', details: error.message });
-    } finally {
-      // Close the sandbox environment after request processing is complete
-      await sandbox.close();
     }
   } else {
     // If the request method is not POST, send Method Not Allowed response
