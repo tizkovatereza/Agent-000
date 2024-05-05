@@ -3,6 +3,13 @@ import axios from 'axios';
 import { Sandbox } from 'e2b';
 import { CodeInterpreter } from '@e2b/code-interpreter'
 
+import {
+  MODEL_NAME,
+  SYSTEM_PROMPT,
+  tools,
+} from './api/model';
+import { codeInterpret } from './api/codeInterpreter'
+
 
 const Home: React.FC = () => {
   const [input, setInput] = useState('');
