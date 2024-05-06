@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Anthropic from '@anthropic-ai/sdk';
 import { tools } from './model';
+import { Sandbox } from 'e2b';
+import { CodeInterpreter } from '@e2b/code-interpreter'
+
 
 // Initialize Anthropic client
 const anthropic = new Anthropic();
