@@ -1,24 +1,21 @@
-import { CodeInterpreter } from '@e2b/code-interpreter'
+import { CodeInterpreter } from '@e2b/code-interpreter';
 
-export async function codeInterpret(codeInterpreter: CodeInterpreter, code: string) {
+// Define a function to interpret code using the E2B CodeInterpreter
+export async function codeInterpret(codeInterpreter: CodeInterpreter, code: string): Promise<any> {
+  // Log the code that is being executed
   console.log(`\n${'='.repeat(50)}\n> Running following AI-generated code:\n${code}\n${'='.repeat(50)}`);
 
-  const exec = await codeInterpreter.notebook.execCell(
-    code,
-    {
-      // You can stream logs from the code interpreter
-      // onStderr: (stderr: string) => console.log("\n[Code Interpreter stdout]", stderr),
-      // onStdout: (stdout: string) => console.log("\n[Code Interpreter stderr]", stdout),
-      //
-      // You can also stream additional results like charts, images, etc.
-      // onResult: ...
-    }
-  )
+  // Execute the code using the CodeInterpreter's execCell method
+  const exec = await codeInterpreter.notebook.execCell(code);
 
+  // Check if there was an error during execution
   if (exec.error) {
-    console.log('[Code Interpreter error]', exec.error) // Runtime error
-    return undefined
+    // Log the error if there was one
+    console.log('[Code Interpreter error]', exec.error);
+    // Return undefined to indicate an error occurred
+    return undefined;
   }
 
-  return exec
+  // Return the execution result if there were no errors
+  return exec;
 }

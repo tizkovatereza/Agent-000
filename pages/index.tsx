@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Sandbox } from 'e2b';
-import { CodeInterpreter } from '@e2b/code-interpreter'
 
 import {
   MODEL_NAME,
