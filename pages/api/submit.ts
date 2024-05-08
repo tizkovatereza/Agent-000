@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       }
       
       // Send input text to Anthropic model for processing
-      const response = await anthropic.messages.create({
+      const response = await anthropic.beta.tools.messages.create({
         max_tokens: 1024,
         messages: [{ role: 'user', content: input }],
         model: 'claude-3-opus-20240229', // Replace with your actual model name

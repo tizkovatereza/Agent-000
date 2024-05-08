@@ -16,11 +16,7 @@ const Home: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-       const res = await axios.post('/api/submit', { input }, {
-         headers: {
-           'anthropic-beta': 'tools-2024-04-04'
-         }
-       });
+       const res = await axios.post('/api/submit', { input });
        setResponse(res.data.message);
     } catch (error) {
        console.error(error);
